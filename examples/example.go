@@ -22,39 +22,20 @@ func main() {
 	err := client.AutoLogin(userID, password, totp_key)
 
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Error:", err)
+		return
 	}
-	resp, err := client.GetLimits()
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(resp)
 
-	basketMargin, err := client.GetBasketMargin(tiqs.BasketMarginRequest{
-		{
-			Exchange:        "NSE",
-			Symbol:          "SBIN",
-			Quantity:        "100",
-			Product:         "I",
-			Price:           "0",
-			TransactionType: "B",
-			OrderType:       "MKT",
-		},
-		{
-			Exchange:        "NSE",
-			Symbol:          "REDINGTON",
-			Quantity:        "100",
-			Product:         "I",
-			Price:           "0",
-			TransactionType: "B",
-			OrderType:       "MKT",
-		},
-	})
+	fmt.Println("Login successful!")
+
+	// Get user details
+	user, err := client.GetUserDetails()
 
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Error:", err)
+		return
 	}
 
-	fmt.Println(basketMargin)
+	fmt.Println("User Details:", user)
 
 }
