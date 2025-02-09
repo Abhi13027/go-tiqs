@@ -38,6 +38,16 @@ func main() {
 
 	fmt.Println("User Details:", user)
 
+	// Get Quotes for an instrument
+	quotes, err := client.GetMarketQuote(3045, "ltp")
+
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	fmt.Println("Quotes:", quotes)
+
 	// Get margin details for a single order
 
 	order, err := client.GetMargin(
