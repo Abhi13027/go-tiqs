@@ -38,4 +38,24 @@ func main() {
 
 	fmt.Println("User Details:", user)
 
+	// Get margin details for a single order
+
+	order, err := client.GetMargin(
+		tiqs.MarginRequest{
+			Exchange:        "NSE",
+			Token:           "3045",
+			Quantity:        "10",
+			Price:           "2000",
+			OrderType:       "LMT",
+			Product:         "I",
+			TransactionType: "B",
+		})
+
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	fmt.Println("Order Margin:", order)
+
 }
