@@ -68,4 +68,27 @@ func main() {
 
 	fmt.Println("Order Margin:", order)
 
+	holidays, err := client.GetHolidays()
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	fmt.Println("Holidays:", holidays)
+
+	indexList, err := client.GetIndexList()
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	fmt.Println("Index List:", indexList)
+
+	optionChainSymbol, err := client.GetOptionChainSymbol()
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	fmt.Println("Option Chain Symbol:", optionChainSymbol)
 }
