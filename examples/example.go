@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/Abhi13027/go-tiqs/ticks"
 	"github.com/Abhi13027/go-tiqs/tiqs"
 	"github.com/joho/godotenv"
 )
@@ -91,4 +92,43 @@ func main() {
 	}
 
 	fmt.Println("Option Chain Symbol:", optionChainSymbol)
+
+	optionChain, err := client.GetOptionChain("26000", "INDEX", "2", "06-MAR-2025")
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
+
+	fmt.Println("Option Chain:", optionChain)
+
+	ws := ticks.NewWS(client.Config.AppID, client.Config.Token)
+
+	err = ws.Connect()
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	// Subscribe to tick data for an instrument
+	err = ws.Subscribe([]int{3045}, "full")
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	// Listen for the data
+	go func() {
+		for tick := range ws.GetDataChannel() {
+			fmt.Printf("Received market data: %+v\n", tick)
+		}
+	}()
+
+	// Handle errors
+	go func() {
+		for err := range ws.GetErrorChannel() {
+			fmt.Printf("Error: %v\n", err)
+		}
+	}()
+
+	select {}
+
 }

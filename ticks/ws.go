@@ -210,6 +210,32 @@ func (ws *WS) handleMessages() {
 				return
 			}
 
+			// Handle Heartbeat (Message Length 1)
+			if len(message) == 1 {
+				ws.logger.Info().Msg("Received heartbeat, sending as JSON")
+
+				// Prepare JSON heartbeat message
+				heartbeatJSON, err := json.Marshal(map[string]interface{}{
+					"type":    "heartbeat",
+					"message": "WebSocket is alive",
+					"time":    time.Now().Format(time.RFC3339),
+				})
+				if err != nil {
+					ws.logger.Error().Err(err).Msg("Failed to marshal heartbeat JSON")
+					continue
+				}
+
+				// Send the JSON heartbeat message as a TickData wrapper
+				select {
+				case ws.DataChan <- TickData{Token: -1, LTT: int32(time.Now().Unix())}: // Use -1 as special token
+					ws.logger.Info().Msgf("Sent heartbeat: %s", string(heartbeatJSON))
+				default:
+					ws.logger.Warn().Msg("Data channel is full, skipping heartbeat")
+				}
+				continue
+			}
+
+			// Process market data if it's a binary message
 			if messageType == websocket.BinaryMessage {
 				tickData, err := ws.parseBinaryToTickData(message)
 				if err != nil {
@@ -220,7 +246,6 @@ func (ws *WS) handleMessages() {
 				// Send data to channel (non-blocking)
 				select {
 				case ws.DataChan <- tickData:
-					// Data sent successfully
 				default:
 					ws.logger.Warn().Msg("Data channel is full, skipping message")
 				}
@@ -232,11 +257,6 @@ func (ws *WS) handleMessages() {
 // parseBinaryToTickData converts binary message to TickData struct
 func (ws *WS) parseBinaryToTickData(data []byte) (TickData, error) {
 	var tick TickData
-
-	if len(data) == 1 {
-		tick.Token = int32(data[0])
-		return tick, nil
-	}
 
 	if len(data) < 17 {
 		return tick, fmt.Errorf("invalid data length: %d", len(data))

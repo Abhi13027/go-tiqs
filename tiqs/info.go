@@ -3,6 +3,8 @@ package tiqs
 import (
 	"encoding/json"
 	"fmt"
+
+	"github.com/rs/zerolog/log"
 )
 
 // HolidaysResponse represents the API response structure for market holidays.
@@ -27,6 +29,21 @@ type IndexListResponse struct {
 type OptionChainSymbolResponse struct {
 	Data   map[string][]string `json:"data"`   // A map containing option chain symbols grouped by category.
 	Status string              `json:"status"` // API response status (e.g., "success" or "error").
+}
+
+// OptionChainResponse represents the API response structure for fetching option chain details.
+type OptionChainResponse struct {
+	Data []struct {
+		Exchange       string `json:"exchange"`
+		Symbol         string `json:"symbol"`
+		Token          string `json:"token"`
+		OptionType     string `json:"optionType"`
+		StrikePrice    string `json:"strikePrice"`
+		PricePrecision string `json:"pricePrecision"`
+		TickSize       string `json:"tickSize"`
+		LotSize        string `json:"lotSize"`
+	} `json:"data"`
+	Status string `json:"status"`
 }
 
 // GetHolidays fetches the list of market holidays and special trading days.
@@ -105,4 +122,45 @@ func (c *Client) GetOptionChainSymbol() (*OptionChainSymbolResponse, error) {
 	}
 
 	return &optionChainSymbolResponse, nil
+}
+
+// GetOptionChain fetches the option chain details for a given symbol.
+//
+// It sends a POST request to the "/info/option-chain" endpoint to retrieve the option chain
+// details for a specific symbol.
+//
+// Returns:
+//   - A pointer to an OptionChainResponse struct containing option chain details if successful.
+//   - An error if the request fails or the response cannot be parsed.
+func (c *Client) GetOptionChain(token, exchange, count, expiry string) (*OptionChainResponse, error) {
+	endpoint := "/info/option-chain"
+
+	// Prepare the request payload with the required parameters.
+	req := map[string]string{
+		"token":    token,
+		"exchange": exchange,
+		"count":    count,
+		"expiry":   expiry,
+	}
+
+	payload, err := json.Marshal(req)
+	log.Info().Str("payload", string(payload)).Msg("Getting the Option Chain")
+	if err != nil {
+		log.Error().Err(err).Msg("Failed to serialize option chain payload")
+		return nil, err
+	}
+
+	// Send a POST request to fetch option chain details.
+	resp, err := c.request(endpoint, "POST", payload)
+	if err != nil {
+		return nil, err
+	}
+
+	// Parse the JSON response into the OptionChainResponse struct.
+	var optionChainResponse OptionChainResponse
+	if err := json.Unmarshal(resp, &optionChainResponse); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal option chain response: %w", err)
+	}
+
+	return &optionChainResponse, nil
 }
