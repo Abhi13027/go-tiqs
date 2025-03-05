@@ -8,43 +8,48 @@ import (
 )
 
 // Position represents a trading position held by the user.
+
 type Position struct {
 	AvgPrice                 string `json:"avgPrice"`                 // Average price of the position.
-	BreakEvenPrice           string `json:"breakEvenPrice"`           // Break-even price for the position.
-	CarrtForwardAvgPrice     string `json:"carrtForwardAvgPrice"`     // Average price carried forward from the previous session.
-	CarryForwardBuyAmount    string `json:"carryForwardBuyAmount"`    // Amount spent on buy orders carried forward.
-	CarryForwardBuyAvgPrice  string `json:"carryForwardBuyAvgPrice"`  // Average buy price of carry-forward positions.
-	CarryForwardBuyQty       string `json:"carryForwardBuyQty"`       // Quantity of buy orders carried forward.
-	CarryForwardSellAmount   string `json:"carryForwardSellAmount"`   // Amount received from sell orders carried forward.
-	CarryForwardSellAvgPrice string `json:"carryForwardSellAvgPrice"` // Average sell price of carry-forward positions.
-	CarryForwardSellQty      string `json:"carryForwardSellQty"`      // Quantity of sell orders carried forward.
-	DayBuyAmount             string `json:"dayBuyAmount"`             // Total amount spent on buy orders during the day.
-	DayBuyAvgPrice           string `json:"dayBuyAvgPrice"`           // Average price of buy orders executed during the day.
-	DayBuyQty                string `json:"dayBuyQty"`                // Total quantity of buy orders executed during the day.
-	DaySellAmount            string `json:"daySellAmount"`            // Total amount received from sell orders during the day.
-	DaySellAvgPrice          string `json:"daySellAvgPrice"`          // Average price of sell orders executed during the day.
-	DaySellQty               string `json:"daySellQty"`               // Total quantity of sell orders executed during the day.
-	Exchange                 string `json:"exchange"`                 // The exchange where the position is held (e.g., NSE, BSE).
-	LotSize                  string `json:"lotSize"`                  // Lot size of the instrument.
-	Ltp                      string `json:"ltp"`                      // Last traded price of the instrument.
-	Multiplier               string `json:"multiplier"`               // Multiplier factor for derivative positions.
-	NetUploadPrice           string `json:"netUploadPrice"`           // Net upload price for the position.
-	OpenBuyAmount            string `json:"openBuyAmount"`            // Total amount spent on open buy orders.
-	OpenBuyAvgPrice          string `json:"openBuyAvgPrice"`          // Average price of open buy orders.
-	OpenBuyQty               string `json:"openBuyQty"`               // Quantity of open buy orders.
-	OpenSellAmount           string `json:"openSellAmount"`           // Total amount received from open sell orders.
-	OpenSellAvgPrice         string `json:"openSellAvgPrice"`         // Average price of open sell orders.
-	OpenSellQty              string `json:"openSellQty"`              // Quantity of open sell orders.
-	PriceFactor              string `json:"priceFactor"`              // Price factor applied to the instrument.
-	PricePrecision           string `json:"pricePrecision"`           // Precision of price representation.
-	Product                  string `json:"product"`                  // Trading product type (e.g., MIS, CNC, NRML).
-	Qty                      string `json:"qty"`                      // Total quantity held in the position.
-	RealisedPnL              string `json:"realisedPnL"`              // Realized profit and loss from the position.
-	Symbol                   string `json:"symbol"`                   // Trading symbol of the instrument.
-	TickSize                 string `json:"tickSize"`                 // Tick size of the instrument.
-	Token                    string `json:"token"`                    // Unique token identifier for the instrument.
-	UnrealisedMarkToMarket   string `json:"unrealisedMarkToMarket"`   // Unrealized Mark-to-Market (MTM) value of the position.
-	UploadPrice              string `json:"uploadPrice"`              // Uploaded price for position tracking.
+	BreakEvenPrice           string `json:"breakEvenPrice"`           // Break-even price of the position.
+	CarryForwarAvgPrice      string `json:"carryForwarAvgPrice"`      // Carry-forward average price of the position.
+	CarryForwardBuyAmount    string `json:"carryForwardBuyAmount"`    // Carry-forward buy amount.
+	CarryForwardBuyAvgPrice  string `json:"carryForwardBuyAvgPrice"`  // Carry-forward buy average price.
+	CarryForwardBuyQty       string `json:"carryForwardBuyQty"`       //	Carry-forward buy quantity.
+	CarryForwardSellAmount   string `json:"carryForwardSellAmount"`   // Carry-forward sell amount.
+	CarryForwardSellAvgPrice string `json:"carryForwardSellAvgPrice"` // Carry-forward sell average price.
+	CarryForwardSellQty      string `json:"carryForwardSellQty"`      // Carry-forward sell quantity.
+	DayBuyAmount             string `json:"dayBuyAmount"`             // Day buy amount.
+	DayBuyAvgPrice           string `json:"dayBuyAvgPrice"`           // Day buy average price.
+	DayBuyQty                string `json:"dayBuyQty"`                //	Day buy quantity.
+	DaySellAmount            string `json:"daySellAmount"`            // Day sell amount.
+	DaySellAvgPrice          string `json:"daySellAvgPrice"`          // Day sell average price.
+	DaySellQty               string `json:"daySellQty"`               // Day sell quantity.
+	Exchange                 string `json:"exchange"`                 // Exchange where the position is held.
+	LotSize                  string `json:"lotSize"`                  // Lot size of the position.
+	Ltp                      string `json:"ltp"`                      // Last traded price of the position.
+	Multiplier               string `json:"multiplier"`               // Multiplier of the position.
+	NetBuyQty                string `json:"netBuyQty"`                // Net buy quantity.
+	NetSellQty               string `json:"netSellQty"`               // Net sell quantity.
+	NetUploadPrice           string `json:"netUploadPrice"`           // Net upload price.
+	OpenBuyAmount            string `json:"openBuyAmount"`            // Open buy amount.
+	OpenBuyAvgPrice          string `json:"openBuyAvgPrice"`          // Open buy average price.
+	OpenBuyQty               string `json:"openBuyQty"`               // Open buy quantity.
+	OpenSellAmount           string `json:"openSellAmount"`           // Open sell amount.
+	OpenSellAvgPrice         string `json:"openSellAvgPrice"`         // Open sell average price.
+	OpenSellQty              string `json:"openSellQty"`              // Open sell quantity.
+	Pnl                      string `json:"pnl"`                      // Profit and loss of the position.
+	PriceFactor              string `json:"priceFactor"`              // Price factor of the position.
+	PricePrecision           string `json:"pricePrecision"`           // Price precision of the position.
+	Product                  string `json:"product"`                  // Product type of the position.
+	Qty                      string `json:"qty"`                      // Quantity of the position.
+	RealisedPnL              string `json:"realisedPnL"`              // Realised profit and loss of the position.
+	Symbol                   string `json:"symbol"`                   // Trading symbol of the position.
+	TickSize                 string `json:"tickSize"`                 // Tick size of the position.
+	Token                    string `json:"token"`                    // Token of the position.
+	UnRealisedPnl            string `json:"unRealisedPnl"`            // Unrealised profit and loss of the position.
+	UnrealisedMarkToMarket   string `json:"unrealisedMarkToMarket"`   // Unrealised mark-to-market of the position.
+	UploadPrice              string `json:"uploadPrice"`              // Upload price of the position.
 }
 
 // PositionsResponse represents the API response for user positions.
