@@ -33,7 +33,7 @@ type Instrument struct {
 	ExchExpiryDate     int64   `csv:"ExchExpiryDate,omitempty"`
 	UpdateTime         int64   `csv:"UpdateTime,omitempty"`
 	MessageFlag        int     `csv:"MessageFlag,omitempty"`
-	FoFlag             int     `csv:"FoFlag,omitempty"`
+	ExchangeSymbol     string  `csv:"ExchangeSymbol,omitempty"`
 }
 
 // GetInstrumentList fetches the list of all available instruments.

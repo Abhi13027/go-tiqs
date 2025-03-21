@@ -131,3 +131,23 @@ func (c *Client) rawRequest(url string, method string, payload []byte) ([]byte, 
 func (c *Client) SetToken(token string) {
 	c.Config.Token = token
 }
+
+// GetToken retrieves the current authentication token.
+//
+// This function returns the current API token used for authentication.
+//
+// Returns:
+//   - The current authentication token.
+func (c *Client) GetToken() string {
+	return c.Config.Token
+}
+
+// GetRefreshToken gets the refresh token of the user.
+//
+// This function allows to get the refresh token at runtime which can be used to create new Token.
+//
+// Returns:
+//   - refreshToken: The refresh token.
+func (c *Client) GetRefreshToken() string {
+	return c.Config.RefreshToken
+}

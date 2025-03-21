@@ -40,14 +40,12 @@ func main() {
 	fmt.Println("User Details:", user)
 
 	// Get Instrument List
-	instruments, err := client.GetInstrumentList()
+	_, err = client.GetInstrumentList()
 
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
 	}
-
-	fmt.Println("Instruments:", instruments)
 
 	// Get Quotes for an instrument
 	quotes, err := client.GetMarketQuote(3045, "ltp")
