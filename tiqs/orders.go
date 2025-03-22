@@ -37,6 +37,45 @@ type OrderResponse struct {
 	} `json:"data,omitempty"`
 }
 
+type OrderDetailsResponse struct {
+	Data []struct {
+		Status             string `json:"status"`
+		Exchange           string `json:"exchange"`
+		Symbol             string `json:"symbol"`
+		ID                 string `json:"id"`
+		Price              string `json:"price"`
+		Quantity           string `json:"quantity"`
+		Product            string `json:"product"`
+		OrderStatus        string `json:"orderStatus"`
+		ReportType         string `json:"reportType"`
+		TransactionType    string `json:"transactionType"`
+		Order              string `json:"order"`
+		FillShares         string `json:"fillShares"`
+		AveragePrice       string `json:"averagePrice"`
+		RejectReason       string `json:"rejectReason"`
+		ExchangeOrderID    string `json:"exchangeOrderID"`
+		CancelQuantity     string `json:"cancelQuantity"`
+		Remarks            string `json:"remarks"`
+		DisclosedQuantity  string `json:"disclosedQuantity"`
+		OrderTriggerPrice  string `json:"orderTriggerPrice"`
+		Retention          string `json:"retention"`
+		BookProfitPrice    string `json:"bookProfitPrice"`
+		BookLossPrice      string `json:"bookLossPrice"`
+		TrailingPrice      string `json:"trailingPrice"`
+		Amo                string `json:"amo"`
+		PricePrecision     string `json:"pricePrecision"`
+		TickSize           string `json:"tickSize"`
+		LotSize            string `json:"lotSize"`
+		Token              string `json:"token"`
+		TimeStamp          string `json:"timeStamp"`
+		OrderTime          string `json:"orderTime"`
+		ExchangeUpdateTime string `json:"exchangeUpdateTime"`
+		RequestTime        string `json:"requestTime"`
+		ErrorMessage       string `json:"errorMessage"`
+	} `json:"data"`
+	Status string `json:"status"`
+}
+
 // PlaceOrder places a new order in the market.
 //
 // It sends a POST request to the API endpoint "/order/{orderType}" with the order details.
@@ -169,7 +208,7 @@ func (c *Client) CancelOrder(orderType, orderID string) error {
 // Returns:
 //   - A pointer to OrderResponse containing order details if successful.
 //   - An error if the retrieval fails.
-func (c *Client) GetOrder(orderID string) (*OrderResponse, error) {
+func (c *Client) GetOrder(orderID string) (*OrderDetailsResponse, error) {
 	endpoint := fmt.Sprintf("/order/%s", orderID)
 
 	resp, err := c.request(endpoint, "GET", nil)
@@ -178,7 +217,7 @@ func (c *Client) GetOrder(orderID string) (*OrderResponse, error) {
 		return nil, err
 	}
 
-	var result OrderResponse
+	var result OrderDetailsResponse
 	if err := json.Unmarshal(resp, &result); err != nil {
 		log.Error().Err(err).Msg("Failed to parse order details response")
 		return nil, err
@@ -188,7 +227,7 @@ func (c *Client) GetOrder(orderID string) (*OrderResponse, error) {
 		return nil, fmt.Errorf("failed to retrieve order details")
 	}
 
-	log.Info().Str("orderNo", result.Data.OrderNo).Msg("Order details retrieved successfully")
+	log.Info().Str("orderNo", orderID).Msg("Order details retrieved successfully")
 	return &result, nil
 }
 
